@@ -7,30 +7,14 @@
 
 using namespace std;
 
-void sig_handler(int res, siginfo_t *info, void *tmp){
-    int status;
-    waitpid(-1, &status, NULL);
-}
-
 int main(int argc, char *argv[]) {
-    string name;
-    int pid = 0;
-    if (fork()){
-        pid = getpid();
-        name = "/home/box/pid_parent";
-        struct sigaction sig_act;
-        sig_act.sa_sigaction = sig_handler;
-        sig_act.sa_flags = SA_RESTART;
-        sigaction(SIGCHLD, &sig_act, NULL);
-    }
-    else{
-        pid = getpid();
-        name="/home/box/pid_child";
-    }
-    ofstream myfile (name.c_str());
-    myfile << pid;
+    char buf[256];
+    fgets(buf, 256, stdin);
+    FILE *my_stream = popen(buf, "r");
+    ofstream myfile ("/home/box/result.out");
+    myfile << fgets(buf, 256, my_stream);
     myfile.flush();
     myfile.close();
-    pause();
+    pclose(my_stream);
     return 0;
 }

@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp -o stepic
+	g++ main.cpp -o /home/box/shell
