@@ -4,17 +4,29 @@
 #include <fstream>
 #include <string>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    char buf[256];
-    fgets(buf, 256, stdin);
-    FILE *my_stream = popen(buf, "r");
-    ofstream myfile ("/home/box/result.out");
-    myfile << fgets(buf, 256, my_stream);
-    myfile.flush();
-    myfile.close();
-    pclose(my_stream);
+    char buf[1024];
+    ///home/box/in.fifo и /home/box/out.fifo
+    char fifoin[] = "/home/box/in.fifo";
+    char fifoout[] = "/home/box/out.fifo";
+    if(mkfifo(fifoin, 0666) == -1){
+        exit(1);
+    }
+    if(mkfifo(fifoout, 0666) == -1){
+        exit(1);
+    }
+    int fd_in = open(fifoin, O_RDONLY);
+    int fd_out = open(fifoout, O_WRONLY);
+    while(true){
+        ssize_t rb = read(fd_in, buf, 1024);
+        if (rb == -1)break;
+        write(fd_out, buf, rb);
+    };
     return 0;
 }
