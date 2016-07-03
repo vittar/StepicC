@@ -13,7 +13,7 @@ void sig_handler(int res, siginfo_t *info, void *tmp){
 }
 
 int main(int argc, char *argv[]) {
-    string name="/home/box/pid_parent";
+    string name("/home/box/pid_parent");
     if (fork()){
         name="/home/box/pid_child";
     }
