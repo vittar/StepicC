@@ -32,9 +32,9 @@ int stepic628(){
         return 1;
     }
     msqid_ds perm;
-    msgctl(msgid, IPC_STAT, &perm);
-    perm.msg_perm.mode = 0777;
-    msgctl(msgid, IPC_SET, &perm);
+//    msgctl(msgid, IPC_STAT, &perm);
+//    perm.msg_perm.mode = 0777;
+//    msgctl(msgid, IPC_SET, &perm);
     message msg;
     ssize_t sizeb = msgrcv(msgid, &msg, 80, 0, 0);
     msg.mtext[sizeb] = 0;
