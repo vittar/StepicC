@@ -26,7 +26,11 @@ int stepic628(){
         printf("errno %d\n", errno);
         return 1;
     }
-    int msgid = msgget(key, (IPC_CREAT | IPC_EXCL | 0777));
+    int msgid = msgget(key, (IPC_CREAT | 0777));
+    if (msgid < 0){
+        printf("errno %d\n", errno);
+        return 1;
+    }
     msqid_ds perm;
     msgctl(msgid, IPC_STAT, &perm);
     perm.msg_perm.mode = 0777;
