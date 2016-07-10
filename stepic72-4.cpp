@@ -39,10 +39,15 @@ public:
         pthread_mutex_lock(&this->lock);
     }
     void unlock(void){
+        printf("mutex_unlock\n");
         pthread_mutex_unlock(&this->lock);
     }
     virtual void print_self(void){
         printf("mutex started\n");
+    }
+    ~lockid_mutex(){
+        printf("mutex_destroy\n");
+        pthread_mutex_destroy(&this->lock);
     }
 };
 
@@ -61,10 +66,15 @@ public:
         pthread_spin_lock(&this->lock);
     }
     void unlock(void){
+        printf("spin_unlock\n");
         pthread_spin_unlock(&this->lock);
     }
     virtual void print_self(void){
         printf("spin started\n");
+    }
+    ~lockid_spin(){
+        printf("spin_destroy\n");
+        pthread_spin_destroy(&this->lock);
     }
 };
 
@@ -83,10 +93,15 @@ public:
         pthread_rwlock_rdlock(&this->lock);
     }
     void unlock(void){
+        printf("rwlock_unlock\n");
         pthread_rwlock_unlock(&this->lock);
     }
     virtual void print_self(void){
         printf("rwlock read started\n");
+    }
+    ~lockid_readlock(){
+        printf("rwlock_destroy\n");
+        pthread_rwlock_destroy(&this->lock);
     }
 };
 
@@ -97,6 +112,10 @@ public:
     void locks(void){
         printf("rwlock_lock_write\n");
         pthread_rwlock_wrlock(&this->lock);
+    }
+    void unlock(void){
+        printf("rwlock_unlock\n");
+        pthread_rwlock_unlock(&this->lock);
     }
     virtual void print_self(void){
         printf("rwlock write started\n");
@@ -128,13 +147,21 @@ int stepic724(){
     for(int i=0; i<4; ++i){
         ptr[i]->locks();
     };
+    printf("----------\n");
     pthread_t thread[4];
     for(int i=0; i<4; ++i){
         pthread_create(&thread[i], NULL, thread_func, ptr[i]);
     }
-    signal(SIGINT, sig_int);
-    signal(SIGHUP, sig_int);
-    pause();
+    // Set signal handler
+    sigset_t sigset;
+    sigemptyset(&sigset);
+    sigaddset(&sigset, SIGTERM);
+    sigaddset(&sigset, SIGINT);
+    sigprocmask(SIG_BLOCK, &sigset, NULL);
+    int sig;
+    printf("----------\n");
+    sigwait( &sigset, &sig );
+    printf("----------\n");
     for(int i=0; i<4; ++i){
         ptr[i]->unlock();
         pthread_join(thread[i], NULL);
