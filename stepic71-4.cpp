@@ -20,6 +20,10 @@ void *thread_func(void *val){
 }
 
 int stepic714(){
+    int mypid = getpid();
+    FILE *file = fopen("/home/box/main.pid", "w");
+    fprintf(file, "%d", mypid);
+    fclose(file);
     pthread_t thread = NULL;
     pthread_create(&thread, NULL, thread_func, NULL);
     pthread_join(thread, NULL);
