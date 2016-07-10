@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp stepic62-9.cpp -lrt -o /home/box/shell
+	g++ main.cpp stepic63-6.cpp -lrt -o /home/box/shell

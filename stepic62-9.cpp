@@ -8,7 +8,9 @@
 #include <mqueue.h>
 #include <cstdio>
 #include <errno.h>
-
+/*
+  Ожидение сообщения POSIX
+*/
 int stepic629(){
     extern int errno;
     mq_attr attr;

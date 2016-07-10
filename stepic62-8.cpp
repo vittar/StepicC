@@ -16,7 +16,10 @@ struct message {
     long mtype;
     char mtext[80];
 };
-
+/*
+ * Получение сообщений SysV
+ *
+ */
 int stepic628(){
     extern int errno;
     FILE *file = fopen("/tmp/msg.temp", "w");
