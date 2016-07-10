@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp stepic71-4.cpp -pthread -o /home/box/shell
+	g++ main.cpp stepic72-4.cpp -pthread -o /home/box/shell
