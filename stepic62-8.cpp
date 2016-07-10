@@ -21,7 +21,7 @@ int stepic628(){
     extern int errno;
     FILE *file = fopen("/tmp/msg.temp", "w");
     fclose(file);
-    key_t key = ftok("/tmp/msg.temp", 2);
+    key_t key = ftok("/tmp/msg.temp", 1);
     if (key < 0){
         printf("errno %d\n", errno);
         return 1;
